@@ -1,10 +1,9 @@
-from pydantic import BaseModel, EmailStr
+# schemas.py
 
-class UserCreate(BaseModel):
-    username: str
-    email: EmailStr
-    password: str
+from pydantic import BaseModel
+from typing import List
 
-class UserLogin(BaseModel):
-    email: EmailStr
-    password: str
+class InterviewLog(BaseModel):
+    candidate_name: str
+    questions: List[str]
+    answers: List[str]
