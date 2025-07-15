@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Interview Session | Professional Platform</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        
+        :root {
+            --primary: #4361ee;
+            --secondary: #3a0ca3;
+            --accent: #f72585;
+            --dark: #14213d;
+            --light: #f8f9fa;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f5f7ff;
+            color: var(--dark);
+            overflow-x: hidden;
+        }
+        
+        .interview-card {
+            box-shadow: 0 10px 30px rgba(67, 97, 238, 0.15);
+            transition: all 0.3s ease;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+        }
+        
+        .interview-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(67, 97, 238, 0.2);
+        }
+        
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            border-radius: 12px;
+            background: #000;
+        }
+        
+        .video-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(67,97,238,0.1) 0%, rgba(58,12,163,0.1) 100%);
+            z-index: 1;
+        }
+        
+        .control-btn {
+            transition: all 0.2s ease;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+        
+        .control-btn:hover {
+            transform: scale(1.1);
+        }
+        
+        .main-control {
+            width: 70px;
+            height: 70px;
+        }
+        
+        .participant-avatar {
+            transition: all 0.3s ease;
+        }
+        
+        .participant-avatar:hover {
+            transform: scale(1.05);
+        }
+        
+        .timer {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(247, 37, 133, 0.4);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(247, 37, 133, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(247, 37, 133, 0);
+            }
+        }
+        
+        .chat-message {
+            animation: fadeIn 0.3s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .countdown {
+            font-family: monospace;
+        }
+        
+        .slide-in {
+            animation: slideIn 0.5s ease forwards;
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateX(-100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Main Container -->
+    <div class="min-h-screen flex flex-col">
+        <!-- Header -->
+        <header class="bg-gradient-to-r from-[#4361ee] to-[#3a0ca3] text-white p-4 shadow-lg">
+            <div class="container mx-auto flex justify-between items-center">
+                <div class="flex items-center space-x-2">
+                    <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/a5129ae8-df8e-4335-b086-6a1c81b8e2ef.png" alt="Company logo with modern minimalistic design in white and blue" class="w-10 h-10 rounded-full">
+                    <h1 class="text-xl font-bold">InterviewConnect</h1>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="bg-white/20 px-3 py-1 rounded-full flex items-center">
+                        <span class="text-sm">LIVE</span>
+                        <div class="w-2 h-2 bg-red-500 rounded-full ml-2 animate-pulse"></div>
+                    </div>
+                    <div class="hidden md:flex items-center space-x-2 bg-white/10 px-3 py-1 rounded-full">
+                        <span class="text-sm">Session ID:</span>
+                        <span class="font-mono">INV-2K7X-9P4Z</span>
+                    </div>
+                    <button class="bg-white text-[#3a0ca3] px-4 py-1 rounded-full text-sm font-medium hover:bg-opacity-90 transition">
+                        <i class="fas fa-share-alt mr-1"></i> Share
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="flex-grow container mx-auto p-4 md:p-6">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Video Section -->
+                <div class="lg:col-span-2">
+                    <div class="interview-card">
+                        <div class="video-container">
+                            <div class="absolute inset-0 flex items-center justify-center z-10">
+                                <div class="text-center text-white px-4">
+                                    <div class="w-32 h-32 mx-auto mb-4 bg-white/20 rounded-full flex items-center justify-center">
+                                        <i class="fas fa-robot text-5xl text-white/50"></i>
+                                    </div>
+                                    <h3 class="text-2xl font-bold">AI Interview Session</h3>
+                                    <p class="mt-2 opacity-80">Your AI interviewer is ready to begin</p>
+                                </div>
+                            </div>
+                            <div class="absolute inset-0 flex flex-col items-center justify-center z-20">
+                                <button id="start-interview-btn"
+                                    class="bg-[#4361ee] hover:bg-[#3a0ca3] text-white font-semibold py-3 px-8 rounded-full text-lg shadow-lg transition mb-4 flex items-center">
+                                    <i class="fas fa-play mr-2"></i> Start Interview
+                                </button>
+                            </div>
+                            <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/5e365658-2553-4907-ad45-2d90b70f298f.png" alt="Placeholder for live interview video feed showing professional setup with blurred background" class="absolute top-0 left-0 w-full h-full object-cover">
+                        </div>
+                        
+                        <!-- Controls -->
+                        <div class="bg-white p-4 flex justify-between items-center border-t border-gray-100">
+                            <div class="flex items-center space-x-2">
+                                <button class="control-btn bg-gray-100 text-gray-700">
+                                    <i class="fas fa-microphone"></i>
+                                </button>
+                                <button class="control-btn bg-gray-100 text-gray-700">
+                                    <i class="fas fa-video"></i>
+                                </button>
+                                <button class="control-btn bg-gray-100 text-gray-700">
+                                    <i class="fas fa-phone-alt"></i>
+                                </button>
+                            </div>
+                            
+                            <div class="flex items-center space-x-3">
+                                <button class="control-btn bg-gray-100 text-gray-700">
+                                    <i class="fas fa-cog"></i>
+                                </button>
+                                <button class="main-control bg-[#f72585] text-white">
+                                    <i class="fas fa-phone-slash"></i>
+                                </button>
+                                <button class="control-btn bg-gray-100 text-gray-700">
+                                    <i class="fas fa-ellipsis-v"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Interview Details -->
+                    <div class="interview-card mt-6 p-6">
+                        <div class="flex items-start">
+                            <div class="flex-1">
+                                <h2 class="text-2xl font-bold text-gray-800">Technical Interview</h2>
+                                <div class="flex flex-wrap items-center mt-2 text-gray-600">
+                                    <span class="flex items-center mr-4">
+                                        <i class="far fa-calendar mr-1"></i>
+                                        <span>Today, June 15</span>
+                                    </span>
+                                    <span class="flex items-center mr-4">
+                                        <i class="far fa-clock mr-1"></i>
+                                        <span>4:00 PM - 5:00 PM (EST)</span>
+                                    </span>
+                                    <span class="flex items-center">
+                                        <i class="fas fa-user mr-1"></i>
+                                        <span>Sarah Johnson (Lead Developer)</span>
+                                    </span>
+                                </div>
+                                <p class="mt-4 text-gray-700">This will be a technical screening interview focusing on algorithms and system design. Please have your development environment ready.</p>
+                            </div>
+                            <div class="timer bg-gradient-to-r from-[#f72585] to-[#b5179e] text-white px-4 py-2 rounded-full flex items-center">
+                                <i class="fas fa-hourglass-half mr-2"></i>
+                                <div class="countdown">00:30:15</div>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-6 pt-6 border-t border-gray-100">
+                            <h3 class="font-semibold text-lg mb-3">Interview Outline</h3>
+                            <div class="space-y-3">
+                                <div class="flex items-start">
+                                    <div class="bg-[#4361ee] text-white text-xs w-6 h-6 rounded-full flex items-center justify-center mt-1 flex-shrink-0">1</div>
+                                    <div class="ml-3">
+                                        <h4 class="font-medium">Introduction (5 mins)</h4>
+                                        <p class="text-sm text-gray-600">Brief introduction from both parties</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start">
+                                    <div class="bg-[#4361ee] text-white text-xs w-6 h-6 rounded-full flex items-center justify-center mt-1 flex-shrink-0">2</div>
+                                    <div class="ml-3">
+                                        <h4 class="font-medium">Technical Questions (25 mins)</h4>
+                                        <p class="text-sm text-gray-600">Assessment of core technical skills</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start">
+                                    <div class="bg-[#4361ee] text-white text-xs w-6 h-6 rounded-full flex items-center justify-center mt-1 flex-shrink-0">3</div>
+                                    <div class="ml-3">
+                                        <h4 class="font-medium">System Design (15 mins)</h4>
+                                        <p class="text-sm text-gray-600">Discussion of architectural challenges</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start">
+                                    <div class="bg-[#4361ee] text-white text-xs w-6 h-6 rounded-full flex items-center justify-center mt-1 flex-shrink-0">4</div>
+                                    <div class="ml-3">
+                                        <h4 class="font-medium">Q&A (5 mins)</h4>
+                                        <p class="text-sm text-gray-600">Your questions about the role</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Right Sidebar -->
+                <div class="space-y-6">
+                    <!-- Participants -->
+                    <div class="interview-card p-6">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="font-semibold text-lg">Participants</h3>
+                            <button class="text-[#4361ee] text-sm font-medium">Invite</button>
+                        </div>
+                        <div class="space-y-4">
+                            <div class="flex items-center">
+                                <div class="participant-avatar w-10 h-10 rounded-full overflow-hidden bg-gradient-to-r from-[#4361ee] to-[#3f37c9] flex items-center justify-center text-white mr-3">
+                                    <i class="fas fa-robot text-lg"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium">AI Interviewer</h4>
+                                    <p class="text-xs text-gray-500">AI Assistant • Host</p>
+                                </div>
+                                <div class="ml-auto">
+                                    <span class="w-2 h-2 bg-green-500 rounded-full block animate-pulse"></span>
+                                </div>
+                            </div>
+                            <div class="flex items-center">
+                                <div class="participant-avatar w-10 h-10 rounded-full overflow-hidden bg-gradient-to-r from-[#f72585] to-[#b5179e] flex items-center justify-center text-white mr-3">
+                                    <span>YT</span>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium">You</h4>
+                                    <p class="text-xs text-gray-500">Candidate</p>
+                                </div>
+                                <div class="ml-auto">
+                                    <span class="w-2 h-2 bg-green-500 rounded-full block animate-pulse"></span>
+                                </div>
+                            </div>
+                            <div class="flex items-center opacity -60">
+                                <div class="participant-avatar w-10 h-10 rounded-full overflow-hidden bg-gray-200 flex items-center justify-center text-gray-500 mr-3">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium">Michael Chen</h4>
+                                    <p class="text-xs text-gray-500">HR Manager</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Documents -->
+                    <div class="interview-card p-6">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="font-semibold text-lg">Shared Documents</h3>
+                            <button class="text-[#4361ee] text-sm font-medium">Add Files</button>
+                        </div>
+                        <div class="space-y-2">
+                            <div class="flex items-center p-2 hover:bg-gray-50 rounded-lg transition">
+                                <div class="w-8 h-8 rounded-lg bg-blue-100 text-[#4361ee] flex items-center justify-center mr-3">
+                                    <i class="fas fa-file-pdf"></i>
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <h4 class="font-medium text-sm truncate">Candidate_Requirements.pdf</h4>
+                                    <p class="text-xs text-gray-500">125 KB • Shared by Sarah</p>
+                                </div>
+                                <button class="text-gray-400 hover:text-[#4361ee] ml-2">
+                                    <i class="fas fa-download"></i>
+                                </button>
+                            </div>
+                            <div class="flex items-center p-2 hover:bg-gray-50 rounded-lg transition">
+                                <div class="w-8 h-8 rounded-lg bg-green-100 text-green-600 flex items-center justify-center mr-3">
+                                    <i class="fas fa-file-word"></i>
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <h4 class="font-medium text-sm truncate">Technical_Questions.docx</h4>
+                                    <p class="text-xs text-gray-500">82 KB • Shared by Michael</p>
+                                </div>
+                                <button class="text-gray-400 hover:text-[#4361ee] ml-2">
+                                    <i class="fas fa-download"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Chat -->
+                    <div class="interview-card p-6">
+                        <h3 class="font-semibold text-lg mb-4">Live Chat</h3>
+                        <div class="chat-container max-h-60 overflow-y-auto mb-4">
+                            <div class="space-y-3">
+                                <div class="chat-message bg-gray-50 p-3 rounded-lg">
+                                    <div class="flex items-start mb-1">
+                                        <div class="w-6 h-6 rounded-full bg-gradient-to-r from-[#4361ee] to-[#3f37c9] flex items-center justify-center text-white text-xs mr-2">
+                                            <i class="fas fa-robot text-xs"></i>
+                                        </div>
+                                        <span class="font-medium text-sm">AI Interviewer</span>
+                                        <span class="text-xs text-gray-500 ml-auto">2:45 PM</span>
+                                    </div>
+                                    <p class="text-sm">Hello! We'll be starting the interview in about 5 minutes. Please make sure your audio and video are working.</p>
+                                </div>
+                                <div class="chat-message bg-gray-50 p-3 rounded-lg ml-6">
+                                    <div class="flex items-start mb-1">
+                                        <div class="w-6 h-6 rounded-full bg-gradient-to-r from-[#f72585] to-[#b5179e] flex items-center justify-center text-white text-xs mr-2">
+                                            Y
+                                        </div>
+                                        <span class="font-medium text-sm">You</span>
+                                        <span class="text-xs text-gray-500 ml-auto">2:46 PM</span>
+                                    </div>
+                                    <p class="text-sm">Thanks Sarah! Everything looks good on my end.</p>
+                                </div>
+                                <div class="chat-message bg-gray-50 p-3 rounded-lg">
+                                    <div class="flex items-start mb-1">
+                                        <div class="w-6 h-6 rounded-full bg-gradient-to-r from-[#3a0ca3] to-[#4361ee] flex items-center justify-center text-white text-xs mr-2">
+                                            S
+                                        </div>
+                                        <span class="font-medium text-sm">Sarah</span>
+                                        <span class="text-xs text-gray-500 ml-auto">2:47 PM</span>
+                                    </div>
+                                    <p class="text-sm">Great! We may have one more team member joining us shortly.</p>
+                                </div>
+                                <div class="chat-message bg-gray-50 p-3 rounded-lg">
+                                    <div class="flex items-start mb-1">
+                                        <div class="w-6 h-6 rounded-full bg-gray-300 flex items-center justify-center text-gray-600 text-xs mr-2">
+                                            S
+                                        </div>
+                                        <span class="font-medium text-sm">System</span>
+                                        <span class="text-xs text-gray-500 ml-auto">2:48 PM</span>
+                                    </div>
+                                    <p class="text-sm">Michael Chen has been invited to the interview session.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex">
+                            <input type="text" placeholder="Type a message..." class="flex-1 border border-gray-200 rounded-l-lg px-4 py-2 focus:outline-none focus:ring-1 focus:ring-[#4361ee]">
+                            <button class="bg-[#4361ee] text-white px-4 rounded-r-lg hover:bg-[#3a0ca3] transition">
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Quick Actions -->
+                    <div class="interview-card p-6">
+                        <h3 class="font-semibold text-lg mb-4">Quick Actions</h3>
+                        <div class="grid grid-cols-2 gap-3">
+                            <button class="bg-blue-50 text-[#4361ee] p-3 rounded-lg text-center hover:bg-blue-100 transition">
+                                <i class="fas fa-file-alt mb-2"></i>
+                                <span class="block text-xs font-medium">Share Notes</span>
+                            </button>
+                            <button class="bg-purple-50 text-[#7209b7] p-3 rounded-lg text-center hover:bg-purple-100 transition">
+                                <i class="fas fa-code mb-2"></i>
+                                <span class="block text-xs font-medium">Run Code</span>
+                            </button>
+                            <button class="bg-pink-50 text-[#f72585] p-3 rounded-lg text-center hover:bg-pink-100 transition">
+                                <i class="fas fa-stopwatch mb-2"></i>
+                                <span class="block text-xs font-medium">Timer</span>
+                            </button>
+                            <button class="bg-green-50 text-green-600 p-3 rounded-lg text-center hover:bg-green-100 transition">
+                                <i class="fas fa-check-circle mb-2"></i>
+                                <span class="block text-xs font-medium">Checklist</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Call to Action -->
+        <div class="bg-gradient-to-r from-[#4361ee] to-[#3a0ca3] text-white py-6">
+            <div class="container mx-auto text-center">
+                <h2 class="text-3xl font-extrabold mb-4">Ready to dive in?</h2>
+                <p class="text-lg mb-6">Join us now and take the next step in your professional journey.</p>
+                <div class="d-flex justify-content-center gap-3">
+                    <a href="/resume" class="btn btn-start">
+                        <i class="fas fa-rocket me-2"></i>Get Started
+                    </a>
+                    <a href="#features" class="btn btn-start">
+                        <i class="fas fa-info-circle me-2"></i>Learn More
+                    </a>
+                    <a href="/live" class="btn btn-start">
+                        <i class="fas fa-video me-2"></i>Start Interview
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Countdown timer
+        function updateCountdown() {
+            const countdownElement = document.querySelector('.countdown');
+            let timeLeft = 30 * 60 + 15; // 30 minutes and 15 seconds
+            
+            const interval = setInterval(() => {
+                timeLeft--;
+                
+                if (timeLeft <= 0) {
+                    clearInterval(interval);
+                    countdownElement.textContent = '00:00:00';
+                    return;
+                }
+                
+                const hours = Math.floor(timeLeft / 3600);
+                const minutes = Math.floor((timeLeft % 3600) / 60);
+                const seconds = timeLeft % 60;
+                
+                countdownElement.textContent = 
+                    `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            }, 1000);
+        }
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            updateCountdown();
+            
+            // Simulate new message after 5 seconds
+            setTimeout(() => {
+                const chatContainer = document.querySelector('.chat-container');
+                const newMessage = document.createElement('div');
+                newMessage.className = 'chat-message bg-gray-50 p-3 rounded-lg';
+                newMessage.innerHTML = `
+                    <div class="flex items-start mb-1">
+                        <div class="w-6 h-6 rounded-full bg-gradient-to-r from-[#3a0ca3] to-[#4361ee] flex items-center justify-center text-white text-xs mr-2">
+                            M
+                        </div>
+                        <span class="font-medium text-sm">Michael</span>
+                        <span class="text-xs text-gray-500 ml-auto">${new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>
+                    </div>
+                    <p class="text-sm">Sorry for joining late! Just wrapping up my previous meeting.</p>
+                `;
+                chatContainer.appendChild(newMessage);
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+            }, 5000);
+            
+            // Add animation to interview steps
+            const steps = document.querySelectorAll('.flex.items-start');
+            steps.forEach((step, index) => {
+                setTimeout(() => {
+                    step.classList.add('slide-in');
+                }, index * 200);
+            });
+        });
+    </script>
+</body>
+</html>

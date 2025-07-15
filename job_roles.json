@@ -1,0 +1,28 @@
+{
+  "jobs": [
+    {
+      "title": "Data Analyst Intern",
+      "skills_required": ["Python", "Pandas", "Data Visualization", "SQL"],
+      "company": "TechSoft",
+      "location": "Remote"
+    },
+    {
+      "title": "AI Research Assistant",
+      "skills_required": ["Python", "Machine Learning", "AI", "TensorFlow"],
+      "company": "AI Labs",
+      "location": "Islamabad"
+    },
+    {
+      "title": "Frontend Developer",
+      "skills_required": ["HTML", "CSS", "JavaScript", "React"],
+      "company": "Webify",
+      "location": "Lahore"
+    },
+    {
+      "title": "Backend Developer Intern",
+      "skills_required": ["Python", "Django", "SQL"],
+      "company": "CodeNest",
+      "location": "Remote"
+    }
+  ]
+}

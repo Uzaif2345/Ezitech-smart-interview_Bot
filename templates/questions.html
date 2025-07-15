@@ -1,0 +1,250 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container py-4">
+    <div class="card shadow border-0" style="border-radius: 15px;">
+        <div class="card-header bg-primary text-white text-center rounded-top">
+            <h2 class="mb-0">AI Interview Assistant</h2>
+            <small class="opacity-75">Gemini Flash 2.5 | Resume + Job Title Based Questions</small>
+        </div>
+        <div class="card-body">
+            <!-- Job Title + Candidate Settings -->
+            <form id="job-form" class="row g-3">
+                <div class="col-md-6">
+                    <label class="form-label">Job Title</label>
+                    <input type="text" id="job_title" class="form-control" placeholder="e.g. Software Engineer" required>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Candidate Name</label>
+                    <input type="text" id="candidate_name" class="form-control" placeholder="e.g. Ali Khan" required>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Language</label>
+                    <select id="language" class="form-select">
+                        <option value="en" selected>English</option>
+                        <option value="ur">Urdu</option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Experience Level</label>
+                    <select id="experience_level" class="form-select">
+                        <option value="entry">Entry</option>
+                        <option value="mid" selected>Mid</option>
+                        <option value="senior">Senior</option>
+                        <option value="executive">Executive</option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Number of Questions</label>
+                    <select id="question_count" class="form-select">
+                        <option value="5">5</option>
+                        <option value="10" selected>10</option>
+                        <option value="15">15</option>
+                        <option value="20">20</option>
+                    </select>
+                </div>
+                <div class="col-12 d-grid mt-2">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-robot me-2"></i>Generate Interview Questions
+                    </button>
+                </div>
+            </form>
+
+            <!-- Resume Upload Section -->
+            <div class="mt-4">
+                <h5><i class="fas fa-file-upload me-2"></i>Upload Resume (PDF / DOCX)</h5>
+                <input type="file" id="resume-upload" class="form-control mt-2" accept=".pdf,.docx">
+                <button id="generate-from-resume" class="btn btn-outline-primary mt-2 w-100">
+                    <i class="fas fa-magic me-2"></i>Generate Questions from Resume
+                </button>
+                <div class="alert alert-info d-none mt-3" id="resume-processing">
+                    <i class="fas fa-spinner fa-spin me-2"></i>Analyzing resume...
+                </div>
+            </div>
+
+            <!-- Questions Section -->
+            <div id="question-section" class="mt-5 d-none">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h4><i class="fas fa-list me-2"></i>Generated Questions</h4>
+                    <button id="submit-log" class="btn btn-success">
+                        <i class="fas fa-paper-plane me-1"></i>Submit Interview Log
+                    </button>
+                </div>
+                <div class="accordion mt-3" id="questions-accordion"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Feedback Modal -->
+<div class="modal fade" id="feedbackModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title">AI Feedback</h5>
+                <button class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body" id="feedback-content">
+                <!-- Feedback will be inserted here -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .accordion-button:not(.collapsed) {
+        background: rgba(13, 110, 253, 0.1);
+    }
+    .mic-btn, .speak-btn {
+        width: 42px;
+        height: 42px;
+    }
+</style>
+
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    const questionAccordion = document.getElementById("questions-accordion");
+    const feedbackModal = new bootstrap.Modal(document.getElementById("feedbackModal"));
+
+    // Generate Interview Questions
+    document.getElementById("job-form").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const job = document.getElementById("job_title").value;
+        const lang = document.getElementById("language").value;
+        const level = document.getElementById("experience_level").value;
+        const count = document.getElementById("question_count").value;
+
+        try {
+            const res = await axios.get("/interview/questions", {
+                params: { job_title: job, language: lang, experience_level: level, count: count }
+            });
+
+            renderQuestions(res.data.questions);
+        } catch {
+            alert("Error generating questions.");
+        }
+    });
+
+    // Render Accordion
+    function renderQuestions(questions) {
+        questionAccordion.innerHTML = "";
+        questions.forEach((q, idx) => {
+            questionAccordion.innerHTML += `
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="heading${idx}">
+                    <button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#collapse${idx}">
+                        Q${idx + 1}. ${q}
+                    </button>
+                </h2>
+                <div id="collapse${idx}" class="accordion-collapse collapse" data-bs-parent="#questions-accordion">
+                    <div class="accordion-body">
+                        <textarea class="form-control answer-field" rows="3" placeholder="Your answer..."></textarea>
+                        <div class="mt-2">
+                            <button class="btn btn-outline-success mic-btn me-2" data-question="${encodeURIComponent(q)}">
+                                <i class="fas fa-microphone"></i>
+                            </button>
+                            <button class="btn btn-outline-primary speak-btn me-2" data-question="${encodeURIComponent(q)}">
+                                <i class="fas fa-volume-up"></i>
+                            </button>
+                            <button class="btn btn-outline-dark get-feedback-btn" data-question="${encodeURIComponent(q)}">
+                                <i class="fas fa-comments"></i> Feedback
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>`;
+        });
+
+        document.getElementById("question-section").classList.remove("d-none");
+    }
+
+    // Speak Button
+    document.addEventListener("click", async (e) => {
+        if (e.target.closest(".speak-btn")) {
+            const text = decodeURIComponent(e.target.closest(".speak-btn").dataset.question);
+            const lang = document.getElementById("language").value;
+            await axios.post("/speak", { question: text, language: lang });
+        }
+    });
+
+    // Mic Button (Speech-to-text)
+    document.addEventListener("click", (e) => {
+        if (e.target.closest(".mic-btn")) {
+            const textarea = e.target.closest(".accordion-body").querySelector(".answer-field");
+            const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+            recognition.lang = document.getElementById("language").value === "ur" ? "ur-PK" : "en-US";
+            recognition.onresult = (event) => {
+                textarea.value = event.results[0][0].transcript;
+            };
+            recognition.start();
+        }
+    });
+
+    // Feedback Button
+    document.addEventListener("click", async (e) => {
+        if (e.target.closest(".get-feedback-btn")) {
+            const body = e.target.closest(".accordion-body");
+            const question = decodeURIComponent(e.target.dataset.question);
+            const answer = body.querySelector(".answer-field").value;
+
+            const res = await axios.get("/gemini/feedback", {
+                params: { answer, language: document.getElementById("language").value }
+            });
+
+            document.getElementById("feedback-content").innerHTML = `
+                <p><strong>Question:</strong> ${question}</p>
+                <p><strong>Your Answer:</strong> ${answer}</p>
+                <hr>
+                <p><strong>Feedback:</strong></p>
+                <div class="alert alert-info">${res.data.feedback}</div>
+            `;
+            feedbackModal.show();
+        }
+    });
+
+    // Resume Upload Handler
+    document.getElementById("generate-from-resume").addEventListener("click", async () => {
+        const fileInput = document.getElementById("resume-upload");
+        const job = document.getElementById("job_title").value;
+        if (!fileInput.files.length) return alert("Upload a resume file first.");
+
+        const formData = new FormData();
+        formData.append("resume", fileInput.files[0]);
+
+        document.getElementById("resume-processing").classList.remove("d-none");
+        try {
+            const res = await axios.post("/questions/generate", formData, {
+                headers: { "Content-Type": "multipart/form-data" }
+            });
+
+            renderQuestions(res.data.questions);
+        } catch {
+            alert("Failed to analyze resume.");
+        } finally {
+            document.getElementById("resume-processing").classList.add("d-none");
+        }
+    });
+
+    // Submit Log
+    document.getElementById("submit-log").addEventListener("click", async () => {
+        const name = document.getElementById("candidate_name").value;
+        if (!name) return alert("Enter your name.");
+        const responses = [];
+
+        document.querySelectorAll(".accordion-item").forEach(item => {
+            const q = item.querySelector(".accordion-button").textContent.trim();
+            const a = item.querySelector(".answer-field").value.trim();
+            if (a) responses.push({ question: q, answer: a });
+        });
+
+        if (!responses.length) return alert("Please answer at least one question.");
+
+        await axios.post("/interview/log", {
+            candidate_name: name,
+            responses
+        });
+        alert("Interview log submitted successfully!");
+    });
+});
+</script>
+{% endblock %}

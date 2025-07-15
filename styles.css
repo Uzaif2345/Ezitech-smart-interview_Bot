@@ -1,0 +1,15 @@
+body {
+    background: linear-gradient(to right, #1f4037, #99f2c8);
+    font-family: 'Segoe UI', sans-serif;
+}
+
+.card {
+    background-color: rgba(255, 255, 255, 0.95);
+    border: none;
+    border-radius: 12px;
+}
+
+#question-list h5 {
+    font-weight: bold;
+    margin-bottom: 15px;
+}

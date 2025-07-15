@@ -1,0 +1,28 @@
+{
+  "questions": [
+    {
+      "job": "AI Research Assistant",
+      "questions": [
+        "What is the difference between supervised and unsupervised learning?",
+        "Explain how backpropagation works in neural networks.",
+        "What are activation functions, and why are they important?"
+      ]
+    },
+    {
+      "job": "Data Analyst Intern",
+      "questions": [
+        "What is data cleaning and why is it important?",
+        "Explain the difference between inner and outer join in SQL.",
+        "How do you handle missing values in a dataset?"
+      ]
+    },
+    {
+      "job": "Frontend Developer",
+      "questions": [
+        "What is the difference between HTML and XHTML?",
+        "Explain the virtual DOM in React.",
+        "How do you ensure your website is responsive?"
+      ]
+    }
+  ]
+}
